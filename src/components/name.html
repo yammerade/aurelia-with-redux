@@ -1,0 +1,26 @@
+<template>
+  <form role="form" submit.delegate="submit()">
+    <div class="form-group">
+      <label for="fn">First Name</label>
+      <input type="text" value.bind="firstName" class="form-control" id="fn" placeholder="first name">
+    </div>
+    <div class="form-group">
+      <label for="ln">Last Name</label>
+      <input type="text" value.bind="lastName" class="form-control" id="ln" placeholder="last name">
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+    <div class="form-group">
+      <label>Name List</label>
+      <p repeat.for="name of nameList" class="help-block">${name | upper}</p>
+    </div>
+    <button class="btn btn-default" click.delegate="undo()" disabled.bind="listStateManager.undoable !== true">
+      <i class="fa fa-undo"></i> Undo
+    </button>
+    <button class="btn btn-default" click.delegate="redo()" disabled.bind="listStateManager.redoable !== true">
+      <i class="fa fa-repeat"></i> Redo
+    </button>
+    <button class="btn btn-default" click.delegate="discard()" disabled.bind="listStateManager.dirty !== true">
+      <i class="fa fa-trash"></i> Reset
+    </button>
+  </form>
+</template>
