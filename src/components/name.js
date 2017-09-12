@@ -1,4 +1,4 @@
-import { inject, bindable } from 'aurelia-framework';
+import { inject, bindable, computedFrom } from 'aurelia-framework';
 import { ListStateManager } from 'services/list-state-manager';
 
 @inject(ListStateManager)
@@ -15,6 +15,7 @@ export class Name {
     this.listStateManager.init(this.nameList, () => {});
   }
 
+  @computedFrom('firstName', 'lastName')
   get fullName() {
     return `${this.firstName} ${this.lastName}`;
   }

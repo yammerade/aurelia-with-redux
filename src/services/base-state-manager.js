@@ -5,8 +5,6 @@ import { changeable } from 'services/changeable-reducer';
 export class BaseStateManager {
 	data = {};
 	component = 'BASE';
-	suppressRefresh = false;
-	suppressUpdate = false;
 	restoreIndex = 0;
 	dirty = false;
 	undoable = false;
@@ -23,37 +21,23 @@ export class BaseStateManager {
 	// Functions intended to work as is
 	//
 	init( data, onUpdate ) {
-		this.suppressUpdate = true;
-
 		this.data = data;
 		this.onUpdate = onUpdate;
 
 		this.updateHandler(data);
 
 		this.setRestorePoint();
-
-		this.suppressUpdate = false;
 	}
 
 	update() {
-		this.suppressRefresh = true; //observables
-
 		const state = this.store.getState().present;
 		this.reassign(state);
 
-		if (!!this.onUpdate && !this.suppressUpdate) {
-			this.onUpdate(this.component, state.args);
-		}
+		this.onUpdate(this.component, state.args);
 
-		//enable observable refresh again on the filter
-		setTimeout(() => {
-			this.suppressRefresh = false;
-
-			this.checkDirty();
-			this.checkUndoable();
-			this.checkRedoable();
-		},
-			50);
+		this.checkDirty();
+		this.checkUndoable();
+		this.checkRedoable();
 	}
 
 	checkUndoable() {
