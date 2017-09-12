@@ -1,19 +1,20 @@
 <template>
   <require from="elements/edit-title"></require>
 
-  <h3>${title}</h3>
-  <input type="button"
-         value="toggle"
-         class="btn btn-default"
-         click.trigger="toggleEditElement()">
 
-  <section class="au-animate" if.bind="showEditTitleElement">
-    <edit-title title.two-way="title">
+  <section class="au-animate">
+    <h3>${title}</h3>
+    <input type="button"
+           value="Toggle Title Edit"
+           class="btn btn-default"
+           click.trigger="toggleEditElement()">
+    <edit-title title.two-way="title" if.bind="showEditTitleElement">
     </edit-title>
     <span>
       Title changed (times): ${count}
     </span>
   </section>
+
   <section class="au-animate">
     <name repeat.for="person of people"
           first-name.bind="person.fname"
