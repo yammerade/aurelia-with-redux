@@ -1,24 +1,24 @@
 <template>
   <require from="elements/edit-title"></require>
 
+  <div>
+  <section class="au-animate" >
+    <h3>Welcome.html ${title}</h3>
 
-  <section class="au-animate">
-    <h3>${title}</h3>
-    <input type="button"
-           value="Toggle Title Edit"
-           class="btn btn-default"
-           click.trigger="toggleEditElement()">
-    <edit-title title.two-way="title" if.bind="showEditTitleElement">
+    <input type="button" 
+    value="Toggle Title Edit"
+    class="btn btn-default"
+    click.trigger="toggleEditElement()">
+
+    <edit-title title.one-way="title" if.bind="showEditTitleElement">
     </edit-title>
-    <span>
-      Title changed (times): ${count}
-    </span>
+
   </section>
 
   <section class="au-animate">
-    <name repeat.for="person of people"
-          first-name.bind="person.fname"
-          last-name.bind="person.lname">
+
+    <name repeat.for="person of people"  first-name.bind="person.fname" last-name.bind="person.lname"  style="border:solid gray">
     </name>
+    
   </section>
 </template>
