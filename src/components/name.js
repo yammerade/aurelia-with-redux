@@ -9,9 +9,7 @@ export class Name {
 
   constructor(listStateManager) {
     this.listStateManager = listStateManager;
-  }
 
-  attached() {
     this.listStateManager.init(this.nameList, () => {});
   }
 

@@ -13,8 +13,6 @@ export class BaseStateManager {
 	constructor() {
 		this.store = createStore(undoable(this.reducer));
 		this.store.subscribe(this.update.bind(this));
-
-		this.actionType = 'INIT';
 	}
 
 	//
