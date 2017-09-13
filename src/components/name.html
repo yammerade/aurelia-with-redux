@@ -19,8 +19,5 @@
     <button class="btn btn-default" click.delegate="redo()" disabled.bind="listStateManager.redoable !== true">
       <i class="fa fa-repeat"></i> Redo
     </button>
-    <button class="btn btn-default" click.delegate="discard()" disabled.bind="listStateManager.dirty !== true">
-      <i class="fa fa-trash"></i> Reset
-    </button>
   </form>
 </template>

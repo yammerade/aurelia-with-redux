@@ -32,7 +32,5 @@ export class Name {
   redo() {
     this.listStateManager.redo();
   }
-  discard() {
-    this.listStateManager.discard();
-  }
+
 }

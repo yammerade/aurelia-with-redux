@@ -17,7 +17,7 @@ export class ListStateManager extends BaseStateManager {
     switch (action.type) {
       case 'UPDATE':
           return {
-            data: action.data.map(d => d)
+            data: action.data.map(d => deepCopy(d))
           };
       default:
         return {

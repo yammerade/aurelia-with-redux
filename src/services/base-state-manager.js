@@ -1,6 +1,6 @@
-﻿import { inject } from 'aurelia-framework';
-import { createStore } from 'redux';
-import { changeable } from 'services/changeable-reducer';
+﻿import { createStore } from 'redux';
+import { ActionCreators } from 'redux-undo';
+import undoable from 'redux-undo';
 
 export class BaseStateManager {
 	data = {};
@@ -11,7 +11,7 @@ export class BaseStateManager {
 	redoable = false;
 
 	constructor() {
-		this.store = createStore(changeable(this.reducer));
+		this.store = createStore(undoable(this.reducer));
 		this.store.subscribe(this.update.bind(this));
 
 		this.actionType = 'INIT';
@@ -25,8 +25,6 @@ export class BaseStateManager {
 		this.onUpdate = onUpdate;
 
 		this.updateHandler(data);
-
-		this.setRestorePoint();
 	}
 
 	update() {
@@ -41,7 +39,7 @@ export class BaseStateManager {
 	}
 
 	checkUndoable() {
-		this.undoable = this.store.getState().past.length > this.restoreIndex;
+		this.undoable = this.store.getState().past.length > 1;
 	}
 
 	checkRedoable() {
@@ -50,7 +48,7 @@ export class BaseStateManager {
 
 	checkDirty() {
 		const current = this.store.getState().present;
-		const baseline = this.store.getState().past[this.restoreIndex];
+		const baseline = this.store.getState().past[0];
 
 		if (!baseline || !current || !baseline.data || !current.data) {
 			this.dirty = false;
@@ -60,43 +58,11 @@ export class BaseStateManager {
 	}
 
 	undo() {
-		this.actionType = 'UNDO';
-		this.store.dispatch({
-			type: 'UNDO'
-		});
+		this.store.dispatch(ActionCreators.undo());
 	}
 
 	redo() {
-		this.actionType = 'REDO';
-		this.store.dispatch({
-			type: 'REDO'
-		});
-	}
-
-	discard() {
-		this.actionType = 'DISCARD';
-		this.store.dispatch({
-			type: 'DISCARD',
-			restoreIndex: this.restoreIndex
-		});
-	}
-
-	reset() {
-		this.actionType = 'RESET';
-		this.store.dispatch({
-			type: 'RESET',
-			restoreIndex: this.initialState
-		});
-	}
-
-	setInitialState() {
-		this.initialState = this.store.getState().past.length;
-		this.setRestorePoint();
-	}
-
-	setRestorePoint() {
-		this.restoreIndex = this.store.getState().past.length;
-		this.dirty = false;
+		this.store.dispatch(ActionCreators.redo());
 	}
 
 	updateHandler(data) {
